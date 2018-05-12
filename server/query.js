@@ -1,0 +1,102 @@
+// 导入Modal
+const Term = require("../database/model");
+// 每页显示数
+const pageSize = 10;
+
+// 根据关键词来查询
+const getByKeywords = (keywords, currentPage, lang) => {
+  return new Promise((resolve, reject) => {
+
+    // 查询条件
+    let reg = new RegExp("" + keywords + "", 'i')
+    let condition = lang == "cn" ? {
+      "cn": {
+        $regex: reg
+      }
+    } : {
+      "en": {
+        $regex: reg
+      }
+    };
+
+    Term.find(condition).exec((err, res) => {
+      if (err) {
+        reject(err);
+      } else {
+        // console.log(res[0].en)   # 居然是undefined
+        // console.log(JSON.parse(JSON.stringify(res[0])).en)  # 格式化后就正常了
+        res = JSON.parse(JSON.stringify(res));
+        // 先查询总数
+        let total = res.length;
+        // 按字符串长度来排序
+        res.sort(function (a, b) {
+          return a[lang].length - b[lang].length;
+        })
+        // 跳过数
+        let skipnum = (currentPage - 1) * pageSize;
+        // 截取分页数据
+        let data = res.splice(skipnum, pageSize);
+        let result = {
+          total,
+          currentPage,
+          data
+        };
+        resolve(result);
+      }
+    })
+  })
+}
+
+// 直接从后台遍历获取所有学科列表
+const getAllCategories = () => {
+  return new Promise((resolve, reject) => {
+    Term.aggregate([{
+      $group: {
+        _id: "$sub1",
+        subject: {
+          $addToSet: "$sub2"
+        }
+      }
+    }]).exec((err, res) => {
+      if (err) {
+        reject(err);
+      } else {
+        res = JSON.parse(JSON.stringify(res));
+        resolve(res);
+      }
+    })
+  })
+}
+
+// 根据学科类别来查询
+const getByCategory = (subject, currentPage) => {
+  return new Promise((resolve, reject) => {
+    Term.find({
+      sub2: subject
+    }).exec((err, res) => {
+      if (err) {
+        reject(err);
+      } else {
+        res = JSON.parse(JSON.stringify(res));
+        // 先查询总数
+        let total = res.length;
+        // 跳过数
+        let skipnum = (currentPage - 1) * pageSize;
+        // 截取分页数据
+        let data = res.splice(skipnum, pageSize);
+        let result = {
+          total,
+          currentPage,
+          data
+        };
+        resolve(result);
+      }
+    })
+  })
+}
+
+module.exports = {
+  getByKeywords,
+  getAllCategories,
+  getByCategory
+}

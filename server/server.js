@@ -1,0 +1,88 @@
+const path = require("path")
+const Koa = require("koa")
+const router = require("koa-router")()
+const mongoose = require("mongoose")
+const static = require("koa-static")
+const convert = require("koa-convert")
+const app = new Koa()
+
+// 数据库相关的封装
+const connectDB = require("../database/connect")
+const {
+  getByKeywords,
+  getAllCategories,
+  getByCategory
+} = require("./query")
+
+// 允许跨域的中间件
+// const cors = require('koa-cors')
+// app.use(cors())
+
+// 分页获取列表数据
+router.get("/list", async ctx => {
+  // 连接数据库
+  if (mongoose.connection.readyState == 0) {
+    await connectDB();
+  }
+  // 接收请求体
+  let curPage = ctx.query.page;
+  let keywords = ctx.query.search;
+  let language = ctx.query.lang;
+  // 获取查询结果
+  // 验证规则是三个参数必须全部存在，避免构造URL发送请求后一下子获取全部数据！
+  if (curPage && keywords && language) {
+    let res = await getByKeywords(keywords, curPage, language);
+    // 输出响应
+    ctx.type = "json";
+    ctx.body = res;
+  } else {
+    ctx.body = "Invalid";
+  }
+})
+
+// 获取学科分类信息整个到索引页
+router.get("/fetchIndex", async ctx => {
+  // 连接数据库
+  if (mongoose.connection.readyState == 0) {
+    await connectDB();
+  }
+  let res = await getAllCategories();
+  // 输出响应
+  ctx.type = "json";
+  ctx.body = res;
+})
+
+
+// 按学科分类分页获取列表数据
+router.get("/list2", async ctx => {
+  // 连接数据库
+  if (mongoose.connection.readyState == 0) {
+    await connectDB();
+  }
+  // 接收请求体
+  let curPage = ctx.query.page;
+  let subject = ctx.query.sub;
+  // 获取查询结果
+  // 验证规则是两个个参数必须全部存在，避免构造URL发送请求后一下子获取全部数据！
+  if (curPage && subject) {
+    let res = await getByCategory(subject, curPage);
+    // 输出响应
+    ctx.type = "json";
+    ctx.body = res;
+  } else {
+    ctx.body = "Invalid";
+  }
+})
+
+// 装载路由
+app.use(router.routes()).use(router.allowedMethods())
+
+// 开启静态服务器
+app.use(convert(
+  static(path.join(__dirname, "../dist"))
+))
+
+const port = process.env.PORT || 3000
+app.listen(port, () => {
+  console.log(`Server started at port of ${port}`)
+})
