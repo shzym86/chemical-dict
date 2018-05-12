@@ -28,6 +28,10 @@ export default new Router({
       path: '/view',
       name: 'CategorySearch',
       component: CategorySearch
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
   ]
 })

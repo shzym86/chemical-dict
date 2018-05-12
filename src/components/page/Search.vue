@@ -110,7 +110,7 @@ export default {
       // 后台请求数据
       this.searching = true;
       axios
-        .get("/list", {
+        .get("/api/list", {
           params: {
             page,
             search: this.keywords,

@@ -36,7 +36,7 @@ export default {
   methods: {
     fetchCategories() {
       this.searching = true;
-      axios.get("/fetchIndex").then(res => {
+      axios.get("/api/fetchIndex").then(res => {
         let preList = res.data.filter(item => {
           return item._id != null;
         });

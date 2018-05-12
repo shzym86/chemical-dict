@@ -1,10 +1,14 @@
 const path = require("path")
 const Koa = require("koa")
-const router = require("koa-router")()
+const KoaRouter = require("koa-router")
 const mongoose = require("mongoose")
 const static = require("koa-static")
 const convert = require("koa-convert")
+const historyApiFallback = require('koa2-connect-history-api-fallback');
 const app = new Koa()
+const router = new KoaRouter({
+  prefix: "/api"
+})
 
 // 数据库相关的封装
 const connectDB = require("../database/connect")
@@ -14,9 +18,9 @@ const {
   getByCategory
 } = require("./query")
 
-// 允许跨域的中间件
-// const cors = require('koa-cors')
-// app.use(cors())
+// 解决history模式的前端路由的404情况
+// https://www.npmjs.com/package/koa2-connect-history-api-fallback
+app.use(historyApiFallback());
 
 // 分页获取列表数据
 router.get("/list", async ctx => {
@@ -51,7 +55,6 @@ router.get("/fetchIndex", async ctx => {
   ctx.type = "json";
   ctx.body = res;
 })
-
 
 // 按学科分类分页获取列表数据
 router.get("/list2", async ctx => {
