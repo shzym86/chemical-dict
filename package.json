@@ -16,7 +16,6 @@
     "koa": "^2.5.1",
     "koa-body": "^2.5.0",
     "koa-convert": "^1.2.0",
-    "koa-cors": "0.0.16",
     "koa-router": "^7.4.0",
     "koa-static": "^4.0.2",
     "koa2-connect-history-api-fallback": "0.0.6",

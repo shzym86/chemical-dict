@@ -10,7 +10,7 @@ const router = new KoaRouter({
   prefix: "/api"
 })
 
-// 数据库相关的封装
+// 与数据库连接、查询相关的封装
 const connectDB = require("../database/connect")
 const {
   getByKeywords,

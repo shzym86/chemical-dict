@@ -8,7 +8,7 @@ const getByKeywords = (keywords, currentPage, lang) => {
   return new Promise((resolve, reject) => {
 
     // 查询条件
-    let reg = new RegExp("" + keywords + "", 'i')
+    let reg = new RegExp(keywords, 'i')
     let condition = lang == "cn" ? {
       "cn": {
         $regex: reg
