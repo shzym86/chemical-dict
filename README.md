@@ -24,14 +24,14 @@
 ```
 .
 ├── build
-│   └── ...								# webpack构建文件
+│   └── ...
 ├── config
-│   └── ...								# webpack配置项
+│   └── ...
 ├── database
 │   ├── connect.js						# 封装数据库连接
 │   └── model.js						# 封装Model
 ├── dist
-│   └── ...								# 项目打包后的静态目录
+│   └── ...
 ├── server
 │   ├── query.js						# 封装数据查询的业务逻辑
 │   └── server.js						# 开启Node服务，装载后端路由
@@ -75,10 +75,9 @@
 
 组件 | 功能 | API | 调用方法
 ---|---|---|---
-Search | 按关键词搜索页 | /api/list | getByKeywords()
+Search | 按关键词搜索页 | /api/list | getByKeywords(keywords, curPage, lang)
 Category | 学科分类索引页 | /api/fetchIndex | getAllCategories()
-CategorySearch | 按学科类别搜索页 | /api/list2 | getByCategory()
-
+CategorySearch | 按学科类别搜索页 | /api/list2 | getByCategory(subject, curPage)
 
 
 ### 4. 采坑全记录
