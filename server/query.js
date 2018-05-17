@@ -2,6 +2,10 @@
 const Term = require("../database/model");
 // 每页显示数
 const pageSize = 10;
+// 导入获取语言的函数
+const {
+  getLanguage
+} = require("./utils")
 
 // 根据关键词来查询
 const getByKeywords = (keywords, currentPage, lang) => {
@@ -95,8 +99,41 @@ const getByCategory = (subject, currentPage) => {
   })
 }
 
+// 根据输入获取自动提示
+const getTips = (input) => {
+  return new Promise((resolve, reject) => {
+    // 判断输入的是中文还是英文
+    let lang = getLanguage(input)
+
+    // 开始查询
+    getByKeywords(input, 1, lang).then(res => {
+      // 获取所有候选词
+      let matchedList = [];
+      res.data.forEach(item => {
+        matchedList.push(item[lang]);
+      })
+      // 数据预处理：去重后截取前5个最终返回
+      let matchedListOnly = Array.from(new Set(matchedList)).slice(0, 5);
+      // 返回autocomplete插件能够识别的格式，必须是有key的Object，不能是Array
+      let data = [];
+      matchedListOnly.forEach(item => {
+        data.push({
+          match: item
+        })
+      })
+      let result = {
+        data
+      }
+      resolve(result);
+    }).catch(err => {
+      reject(err);
+    })
+  })
+}
+
 module.exports = {
   getByKeywords,
   getAllCategories,
-  getByCategory
+  getByCategory,
+  getTips
 }

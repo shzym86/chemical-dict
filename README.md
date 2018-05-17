@@ -34,6 +34,7 @@
 │   └── ...
 ├── server
 │   ├── query.js						# 封装数据查询的业务逻辑
+│   ├── utils.js						# 封装工具函数
 │   └── server.js						# 开启Node服务，装载后端路由
 ├── src
 │   ├── App.vue							# 根组件
@@ -88,12 +89,14 @@ CategorySearch | 按学科类别搜索页 | /api/list2 | getByCategory(subject, 
 
 ##### (1) Vue-router采用了history模式后，启动服务器运行后一旦刷新页面会找不到相关路由页面(Not Found)。
 
-解决：由于后端采用Koa2框架，需要使用[koa2-connect-history-api-fallback](https://www.npmjs.com/package/koa2-connect-history-api-fallback)中间件，把没有找到的后端路由全部定向到index.html，这样就可以正常访问前端路由了。
+解决：由于后端采用Koa2框架，需要使用[koa2-connect-history-api-fallback](https://www.npmjs.com/package/koa2-connect-history-api-fallback)中间件，把没有找到的后端路由全部定向到index.html，这样就可以正常访问前端路由了。注意：必须将`/api`排除在外，否则不能发起异步数据请求，直接返回的是主页的html代码。
 
 ```
 const historyApiFallback = require('koa2-connect-history-api-fallback');
 
-app.use(historyApiFallback());
+app.use(historyApiFallback({
+	whiteList: ['/api']
+}));
 ```
 
 ---
@@ -168,6 +171,20 @@ checkCode(str) {
   return flag == 0 ? false : true;
 }
 ```
+
+安全验证处理：
+
+- 第一层验证：搜索框 EnterBox组件
+
+	- 防止用户在输入框内输入特殊字符导致正则报错，给出弹窗提示。
+
+- 第二层验证：结果显示页 Search组件
+
+	- 防止用户通过构造URL在浏览器中键入，因为search页面一挂载就会执行查询方法。
+
+- 第三层验证：服务端验证 server.js
+
+	- 防止用户通过请求工具发送，如postman，那样也会使得服务端报错。
 
 ---
 
@@ -292,8 +309,3 @@ export default {
 
 	<link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
 
-
-### 5. 可进一步扩展的地方
-
-- 为搜索框增加自动提示(autocomplete)的功能。
-- 强化搜索算法，更合理地匹配用户潜在需求。
