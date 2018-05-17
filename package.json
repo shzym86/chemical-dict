@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev:client": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "dev:server": "cross-env NODE_ENV=development nodemon server/server.js",
+    "dev:server": "nodemon server/server.js",
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "start": "node server/server.js",
     "lint": "eslint --ext .js,.vue src",
@@ -39,7 +39,6 @@
     "chalk": "^2.0.1",
     "concurrently": "^3.5.1",
     "copy-webpack-plugin": "^4.0.1",
-    "cross-env": "^5.1.5",
     "css-loader": "^0.28.0",
     "eslint": "^4.15.0",
     "eslint-config-standard": "^10.2.1",

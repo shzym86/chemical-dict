@@ -10,8 +10,6 @@ const router = new KoaRouter({
   prefix: "/api"
 })
 
-const isDev = process.env.NODE_ENV === 'development'
-
 // 与数据库连接、查询相关的封装
 const connectDB = require("../database/connect")
 const {
@@ -29,11 +27,9 @@ const {
 
 // 解决history模式的前端路由的404情况
 // https://www.npmjs.com/package/koa2-connect-history-api-fallback
-if (!isDev) {
-  app.use(historyApiFallback({
-    whiteList: ['/api']
-  }));
-}
+app.use(historyApiFallback({
+  whiteList: ['/api']
+}));
 
 // 分页获取列表数据
 router.get("/list", async ctx => {
