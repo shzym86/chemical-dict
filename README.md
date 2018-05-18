@@ -21,7 +21,7 @@
 
 ### 2. 项目目录
 
-```
+```bash
 .
 ├── build
 │   └── ...
@@ -91,7 +91,7 @@ CategorySearch | 按学科类别搜索页 | /api/list2 | getByCategory(subject, 
 
 解决：由于后端采用Koa2框架，需要使用[koa2-connect-history-api-fallback](https://www.npmjs.com/package/koa2-connect-history-api-fallback)中间件，把没有找到的后端路由全部定向到index.html，这样就可以正常访问前端路由了。注意：必须将`/api`排除在外，否则不能发起异步数据请求，直接返回的是主页的html代码。
 
-```
+```javascript
 const historyApiFallback = require('koa2-connect-history-api-fallback');
 
 app.use(historyApiFallback({
@@ -109,7 +109,7 @@ b. 涉及到跨域，服务端会阻止请求，如果在server中写上允许�
  
 解决：在webpack配置项中增加代理机制，对于vue-cli构建的项目，在~/config/index.js的dev配置项里加入代理路径和地址，可以同时解决上述两个问题。
 
-```
+```javascript
 proxyTable: {
   '/api': 'http://127.0.0.1:3000'
 },
@@ -121,7 +121,7 @@ proxyTable: {
 
 解决：在数据查询操作之前，先判断数据库是否已连接，如是则跳过这个步骤直接去查询。
 
-```
+```javascript
 const connectDB = require("../database/connect")
 
 if (mongoose.connection.readyState == 0) {
@@ -141,7 +141,7 @@ if (mongoose.connection.readyState == 0) {
 
 解决：通过构建正则表达式
 
-```
+```javascript
 let reg = new RegExp(keywords, 'i')
 
 Modal.find({
@@ -155,7 +155,7 @@ Modal.find({
 
 解决：在前端将查询参数传递给server端之前，必须将特殊字符过滤掉，或者直接提示。通过一个函数来检测是否含有特殊字符。
 
-```
+```javascript
 checkCode(str) {
   // 过滤特殊字符，这些字符不能代入正则
   let specialKeys =
@@ -190,7 +190,7 @@ checkCode(str) {
 
 ##### (7) 如何判断字符串是否全为中文？
 
-```
+```javascript
 lang() {
   let re = /[^\u4e00-\u9fa5]/;
   // 不全为中文则返回"en"，按英文处理
@@ -206,7 +206,7 @@ lang() {
 
 解决：直接查询到的虽然是一个json，但可能会出现换行之类的bug，需要手动处理以下，即先转字符串再转json就正常了。
 
-```
+```javascript
 JSON.parse(JSON.stringify(res))
 ```
 
@@ -218,11 +218,15 @@ JSON.parse(JSON.stringify(res))
 
 导入：csv的第一行标明字段名，--headerline 会将首行的字段名作为每条数据的field。
 
-	mongoimport -d [database] -c [collection] --type=csv --headerline --ignoreBlanks --file ./a.csv
+```bash
+mongoimport -d [database] -c [collection] --type=csv --headerline --ignoreBlanks --file ./a.csv
+```
 
 导出：-f 指定需要提取的field，用逗号分隔。 
 
-	mongoexport -d [database] -c [collection] -f _id,name,password --type=csv -o ./b.csv 
+```bash
+mongoexport -d [database] -c [collection] -f _id,name,password --type=csv -o ./b.csv 
+```
 
 ---
 
@@ -230,7 +234,7 @@ JSON.parse(JSON.stringify(res))
 
 解决：因为在当前页面搜索后，尽管跳转了当前路由，但由于组件复用，页面不会刷新。通过监测路由的变化，一旦监测到的话，强制刷新当前路由页面。
 
-```
+```javascript
  watch: {
   $route(to, from) {
     this.$router.go(0);
@@ -244,7 +248,7 @@ JSON.parse(JSON.stringify(res))
 
 解决：跳转带有query信息的路由，只能使用编程式导航，给目标监听一个点击事件。
 
-```
+```javascript
 this.$router.push({
   name: "Search",
   query: {
@@ -261,16 +265,19 @@ this.$router.push({
 
 首页调用：
 
-	<EnterBox cname="enter-box-homepage"></EnterBox>
-
+```html
+<EnterBox cname="enter-box-homepage"></EnterBox>
+```
 
 子页面调用：
 
-	<EnterBox class="box" cname="enter-box-subpage"></EnterBox>
-	
+```html
+<EnterBox class="box" cname="enter-box-subpage"></EnterBox>
+```
+
 组件中接收一个cname作为第二个className：
 
-```
+```html
 <template>
   <div class="enter-box" :class="cname">
     ...
@@ -307,5 +314,6 @@ export default {
 
 解决：将文件放到~/static/目录下，在模板文件中直接引入即可。
 
-	<link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
-
+```html
+<link rel="shortcut icon" type="image/x-icon" href="/static/favicon.ico" />
+```
