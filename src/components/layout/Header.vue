@@ -2,18 +2,18 @@
   <header class="container-fluid">
     <div class="container">
       <router-link to="/">化学专业术语在线翻译</router-link>
-    </div>    
+    </div>
   </header>
 </template>
 
 <script>
 export default {
-  name: "Header",
+  name: 'Header',
   components: {},
-  data() {
-    return {};
+  data () {
+    return {}
   }
-};
+}
 </script>
 
 <style scoped lang="scss">

@@ -9,7 +9,7 @@
     "dev:server": "nodemon server/server.js",
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
     "start": "node server/server.js",
-    "lint": "eslint --ext .js,.vue src",
+    "lint": "eslint --fix --ext .js,.vue src",
     "build": "node build/build.js"
   },
   "dependencies": {

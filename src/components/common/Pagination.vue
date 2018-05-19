@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: "Pagination",
+  name: 'Pagination',
   props: {
     maxVisibleButtons: {
       type: Number,
@@ -37,67 +37,67 @@ export default {
     }
   },
   computed: {
-    isInFirstPage: function() {
-      return this.currentPage === 1;
+    isInFirstPage: function () {
+      return this.currentPage === 1
     },
-    isInLastPage: function() {
-      return this.currentPage === this.totalPages;
+    isInLastPage: function () {
+      return this.currentPage === this.totalPages
     },
     // 起始页码
-    startPage: function() {
+    startPage: function () {
       // 切换前几页位置不变，直到激活页码到中间位置才往后切换
       if (this.currentPage <= Math.floor(this.maxVisibleButtons / 2)) {
-        return 1;
+        return 1
       }
       // 切换到最后几页时，始终保持页码的个数不变
       if (this.currentPage >= this.totalPages - this.maxVisibleButtons + 1) {
-        let sp = this.totalPages - this.maxVisibleButtons + 1;
+        let sp = this.totalPages - this.maxVisibleButtons + 1
         // 如果总页数不足，则直接设为第一页
-        return sp <= 0 ? 1 : sp;
+        return sp <= 0 ? 1 : sp
       }
       // 其它情况下，控制当前激活页始终在中间位置
-      return this.currentPage - Math.floor(this.maxVisibleButtons / 2);
+      return this.currentPage - Math.floor(this.maxVisibleButtons / 2)
     },
     // 结束页码
-    endPage: function() {
+    endPage: function () {
       return Math.min(
         this.startPage + this.maxVisibleButtons - 1,
         this.totalPages
-      );
+      )
     },
     // 动态变化的页码集合
-    pages: function() {
-      const pageRange = [];
+    pages: function () {
+      const pageRange = []
       for (let i = this.startPage; i <= this.endPage; i++) {
         pageRange.push({
           num: i,
           isDisabled: i === this.currentPage
-        });
+        })
       }
-      return pageRange;
+      return pageRange
     }
   },
   methods: {
-    onClickFirstPage: function() {
-      this.$emit("pagechanged", 1);
+    onClickFirstPage: function () {
+      this.$emit('pagechanged', 1)
     },
-    onClickPreviousPage: function() {
-      this.$emit("pagechanged", this.currentPage - 1);
+    onClickPreviousPage: function () {
+      this.$emit('pagechanged', this.currentPage - 1)
     },
-    onClickPage: function(page) {
-      this.$emit("pagechanged", page);
+    onClickPage: function (page) {
+      this.$emit('pagechanged', page)
     },
-    onClickNextPage: function() {
-      this.$emit("pagechanged", this.currentPage + 1);
+    onClickNextPage: function () {
+      this.$emit('pagechanged', this.currentPage + 1)
     },
-    onClickLastPage: function() {
-      this.$emit("pagechanged", this.totalPages);
+    onClickLastPage: function () {
+      this.$emit('pagechanged', this.totalPages)
     },
-    isPageActive: function(page) {
-      return this.currentPage === page;
+    isPageActive: function (page) {
+      return this.currentPage === page
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

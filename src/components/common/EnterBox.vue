@@ -19,15 +19,15 @@
 </template>
 
 <script>
-require("vue2-autocomplete-js/dist/style/vue2-autocomplete.css");
-import Autocomplete from "vue2-autocomplete-js";
+import Autocomplete from 'vue2-autocomplete-js'
+require('vue2-autocomplete-js/dist/style/vue2-autocomplete.css')
 export default {
-  name: "EnterBox",
+  name: 'EnterBox',
   components: { Autocomplete },
-  data() {
+  data () {
     return {
-      keywords: ""
-    };
+      keywords: ''
+    }
   },
   props: {
     cname: {
@@ -36,53 +36,53 @@ export default {
     }
   },
   methods: {
-    trim(str) {
-      return str.replace(/(^\s*)|(\s*$)/g, "");
+    trim (str) {
+      return str.replace(/(^\s*)|(\s*$)/g, '')
     },
     // 动态控制是否跳转路由，使用编程式导航
-    gotoSearch() {
+    gotoSearch () {
       // 先对关键词进行trim()处理
-      this.keywords = this.trim(this.keywords);
+      this.keywords = this.trim(this.keywords)
       // 开始查询
       if (!this.keywords) {
-        alert("请输入查询关键词！");
+        alert('请输入查询关键词！')
       } else if (!this.checkCode(this.keywords)) {
-        alert("请不要输入特殊字符！");
+        alert('请不要输入特殊字符！')
       } else {
         this.$router.push({
-          name: "Search",
+          name: 'Search',
           query: {
             wd: this.keywords
           }
-        });
+        })
       }
     },
-    checkCode(str) {
+    checkCode (str) {
       // 过滤特殊字符，这些字符不能代入正则
       let specialKeys =
-        "[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&%*（）——|{}【】‘；：”“'。，、？]";
-      let flag = 1;
+        "[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&%*（）——|{}【】‘；：”“'。，、？]"
+      let flag = 1
       for (let i = 0; i < str.length; i++) {
-        let code = str.substr(i, 1);
+        let code = str.substr(i, 1)
         if (specialKeys.indexOf(code) > 0) {
-          flag = 0;
-          break;
+          flag = 0
+          break
         }
       }
-      return flag == 0 ? false : true;
+      return flag !== 0
     },
-    processJSON(json) {
-      return json.data;
+    processJSON (json) {
+      return json.data
     },
-    bindInput(str) {
+    bindInput (str) {
       // similar to v-model
-      this.keywords = str;
+      this.keywords = str
     },
-    getData(obj) {
-      this.keywords = obj.match;
+    getData (obj) {
+      this.keywords = obj.match
     }
   }
-};
+}
 </script>
 
 <style lang="scss">
@@ -151,7 +151,7 @@ $color: #2e6eb0;
       }
       a:hover,
       &.focus-list a {
-        background: $color;
+        background: $color !important;
       }
     }
   }

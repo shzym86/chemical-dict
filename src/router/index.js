@@ -8,30 +8,30 @@ import CategorySearch from '@/components/page/CategorySearch.vue'
 Vue.use(Router)
 
 export default new Router({
-  mode: "history",
+  mode: 'history',
   routes: [{
-      path: '/',
-      name: 'Home',
-      component: Home
-    },
-    {
-      path: '/search',
-      name: 'Search',
-      component: Search
-    },
-    {
-      path: '/category',
-      name: 'Category',
-      component: Category
-    },
-    {
-      path: '/view',
-      name: 'CategorySearch',
-      component: CategorySearch
-    },
-    {
-      path: '*',
-      redirect: '/'
-    }
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/search',
+    name: 'Search',
+    component: Search
+  },
+  {
+    path: '/category',
+    name: 'Category',
+    component: Category
+  },
+  {
+    path: '/view',
+    name: 'CategorySearch',
+    component: CategorySearch
+  },
+  {
+    path: '*',
+    redirect: '/'
+  }
   ]
 })

@@ -19,16 +19,16 @@
 </template>
 
 <script>
-import EnterBox from "../common/EnterBox";
+import EnterBox from '../common/EnterBox'
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
     EnterBox
   },
-  data() {
-    return {};
+  data () {
+    return {}
   }
-};
+}
 </script>
 
 <style scoped lang="scss">

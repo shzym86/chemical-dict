@@ -16,55 +16,55 @@
 </template>
 
 <script>
-import axios from "axios";
-import Heador from "../layout/Header";
-import Navbar from "../layout/Navbar";
-import Loading from "../common/Loading";
+import axios from 'axios'
+import Heador from '../layout/Header'
+import Navbar from '../layout/Navbar'
+import Loading from '../common/Loading'
 export default {
-  name: "Category",
+  name: 'Category',
   components: {
     Heador,
     Navbar,
     Loading
   },
-  data() {
+  data () {
     return {
       categoryList: [],
       searching: false
-    };
-  },
-  methods: {
-    fetchCategories() {
-      this.searching = true;
-      axios.get("/api/fetchIndex").then(res => {
-        let preList = res.data.filter(item => {
-          return item._id != null;
-        });
-        let order = [
-          "有机化学",
-          "分析化学",
-          "无机化学",
-          "物理化学",
-          "高分子化学",
-          "放射化学"
-        ];
-        // 按自定义规则排序数组
-        this.categoryList = this.sortArray(preList, order);
-        this.searching = false;
-      });
-    },
-    sortArray(arr, order) {
-      let list = [];
-      for (let i = 0; i < arr.length; i++) {
-        list = list.concat(arr.filter(item => item._id === order[i]));
-      }
-      return list;
     }
   },
-  mounted() {
-    this.fetchCategories();
+  methods: {
+    fetchCategories () {
+      this.searching = true
+      axios.get('/api/fetchIndex').then(res => {
+        let preList = res.data.filter(item => {
+          return item._id != null
+        })
+        let order = [
+          '有机化学',
+          '分析化学',
+          '无机化学',
+          '物理化学',
+          '高分子化学',
+          '放射化学'
+        ]
+        // 按自定义规则排序数组
+        this.categoryList = this.sortArray(preList, order)
+        this.searching = false
+      })
+    },
+    sortArray (arr, order) {
+      let list = []
+      for (let i = 0; i < arr.length; i++) {
+        list = list.concat(arr.filter(item => item._id === order[i]))
+      }
+      return list
+    }
+  },
+  mounted () {
+    this.fetchCategories()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -97,4 +97,3 @@ export default {
   }
 }
 </style>
-

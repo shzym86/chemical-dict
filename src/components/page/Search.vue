@@ -60,57 +60,57 @@
 </template>
 
 <script>
-import axios from "axios";
-import Heador from "../layout/Header";
-import Navbar from "../layout/Navbar";
-import Pagination from "../common/Pagination";
-import Loading from "../common/Loading";
+import axios from 'axios'
+import Heador from '../layout/Header'
+import Navbar from '../layout/Navbar'
+import Pagination from '../common/Pagination'
+import Loading from '../common/Loading'
 export default {
-  name: "Search",
+  name: 'Search',
   components: {
     Heador,
     Navbar,
     Pagination,
     Loading
   },
-  data() {
+  data () {
     return {
-      keywords: "",
+      keywords: '',
       list: [],
       searching: false,
       currentPage: 1,
       totalRecord: -1,
       pageSize: 10
-    };
+    }
   },
   computed: {
-    lang() {
-      let re = /[^\u4e00-\u9fa5]/;
+    lang () {
+      let re = /[^\u4e00-\u9fa5]/
       // 不全为中文则返回"en"，按英文处理
-      if (re.test(this.keywords)) return "en";
+      if (re.test(this.keywords)) return 'en'
       // 全为中文返回"cn"
-      return "cn";
+      return 'cn'
     },
-    allPages() {
-      return Math.ceil(this.totalRecord / this.pageSize);
+    allPages () {
+      return Math.ceil(this.totalRecord / this.pageSize)
     }
   },
   methods: {
-    onPageChange: function(page) {
+    onPageChange: function (page) {
       // this.currentPage = page;
       // console.log(this.currentPage);
-      this.search(page);
+      this.search(page)
     },
-    search(page = 1) {
+    search (page = 1) {
       // 搜索词为空或含有特殊字符，就不查询立即回到主页
-      if (this.keywords == "" || !this.checkCode(this.keywords)) {
-        this.$router.push({ path: "/" });
-        return false;
+      if (this.keywords === '' || !this.checkCode(this.keywords)) {
+        this.$router.push({ path: '/' })
+        return false
       }
       // 后台请求数据
-      this.searching = true;
+      this.searching = true
       axios
-        .get("/api/list", {
+        .get('/api/list', {
           params: {
             page,
             search: this.keywords,
@@ -118,52 +118,52 @@ export default {
           }
         })
         .then(res => {
-          let keywords = this.keywords;
-          let lang = this.lang;
-          let preList = res.data.data;
+          let keywords = this.keywords
+          let lang = this.lang
+          let preList = res.data.data
           // 数据飘红
           preList.forEach(item => {
             item[lang] = item[lang].replace(
               keywords,
               `<span style="color:red;">${keywords}</span>`
-            );
-          });
+            )
+          })
           // 修改变量
-          this.searching = false;
-          this.currentPage = page;
-          this.totalRecord = res.data.total;
-          this.list = preList;
-        });
+          this.searching = false
+          this.currentPage = page
+          this.totalRecord = res.data.total
+          this.list = preList
+        })
     },
     // 这个页面还要验证一次特殊字符，否则在URL里输入特殊字符码也会报错
-    checkCode(str) {
+    checkCode (str) {
       // 过滤特殊字符，这些字符不能代入正则
       let specialKeys =
-        "[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&%*（）——|{}【】‘；：”“'。，、？]";
-      let flag = 1;
+        "[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&%*（）——|{}【】‘；：”“'。，、？]"
+      let flag = 1
       for (let i = 0; i < str.length; i++) {
-        let code = str.substr(i, 1);
+        let code = str.substr(i, 1)
         if (specialKeys.indexOf(code) > 0) {
-          flag = 0;
-          break;
+          flag = 0
+          break
         }
       }
-      return flag == 0 ? false : true;
+      return flag !== 0
     }
   },
-  mounted() {
+  mounted () {
     // 接收搜索框传过来的值并立即查询
-    this.keywords = this.$route.query.wd || "";
-    this.search();
+    this.keywords = this.$route.query.wd || ''
+    this.search()
   },
   watch: {
     // 监测路由变化，否则在当前页面搜索后，尽管跳转了当前路由，但由于组件复用，页面不会刷新
-    $route(to, from) {
+    $route (to, from) {
       // 强制刷新路由
-      this.$router.go(0);
+      this.$router.go(0)
     }
   }
-};
+}
 </script>
 
 <style scoped lang="scss">

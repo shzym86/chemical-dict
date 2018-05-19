@@ -3,7 +3,7 @@
     <Heador></Heador>
     <Navbar>搜索结果：</Navbar>
     <!-- 查询到结果的页面 -->
-    <div class="container" v-if="totalRecord > 0"> 
+    <div class="container" v-if="totalRecord > 0">
       <!-- Result -->
       <div class="toolbar">
         <p>已搜索到{{ totalRecord }}条 <span class="red">{{ subject }}</span> 研究方向的专业术语！</p>
@@ -34,50 +34,50 @@
 </template>
 
 <script>
-import axios from "axios";
-import Heador from "../layout/Header";
-import Navbar from "../layout/Navbar";
-import Pagination from "../common/Pagination";
-import Loading from "../common/Loading";
+import axios from 'axios'
+import Heador from '../layout/Header'
+import Navbar from '../layout/Navbar'
+import Pagination from '../common/Pagination'
+import Loading from '../common/Loading'
 export default {
-  name: "CategorySearch",
+  name: 'CategorySearch',
   components: {
     Heador,
     Navbar,
     Pagination,
     Loading
   },
-  data() {
+  data () {
     return {
-      subject: "",
+      subject: '',
       list: [],
       searching: false,
       currentPage: 1,
       totalRecord: -1,
       pageSize: 10
-    };
+    }
   },
   computed: {
-    allPages() {
-      return Math.ceil(this.totalRecord / this.pageSize);
+    allPages () {
+      return Math.ceil(this.totalRecord / this.pageSize)
     }
   },
   methods: {
-    onPageChange: function(page) {
+    onPageChange: function (page) {
       // this.currentPage = page;
       // console.log(this.currentPage);
-      this.search(page);
+      this.search(page)
     },
-    search(page = 1) {
+    search (page = 1) {
       // URL中没有query就不查询立即回到主页
-      if (this.subject == "") {
-        this.$router.push({ path: "/" });
-        return false;
+      if (this.subject === '') {
+        this.$router.push({ path: '/' })
+        return false
       }
       // 后台请求数据
-      this.searching = true;
+      this.searching = true
       axios
-        .get("/api/list2", {
+        .get('/api/list2', {
           params: {
             page,
             sub: this.subject
@@ -85,30 +85,30 @@ export default {
         })
         .then(res => {
           // 如果在URL中乱写查询不到的话就跳转到主页
-          if (res.data.total == 0) {
-            this.$router.push({ path: "/" });
+          if (res.data.total === 0) {
+            this.$router.push({ path: '/' })
           } else {
-            this.searching = false;
-            this.currentPage = page;
-            this.totalRecord = res.data.total;
-            this.list = res.data.data;
+            this.searching = false
+            this.currentPage = page
+            this.totalRecord = res.data.total
+            this.list = res.data.data
           }
-        });
+        })
     }
   },
-  mounted() {
+  mounted () {
     // 接收路由传过来的值并立即查询
-    this.subject = this.$route.query.sub || "";
-    this.search();
+    this.subject = this.$route.query.sub || ''
+    this.search()
   },
   watch: {
     // 监测路由变化，否则在当前页面搜索后，尽管跳转了当前路由，但由于组件复用，页面不会刷新
-    $route(to, from) {
+    $route (to, from) {
       // 强制刷新路由
-      this.$router.go(0);
+      this.$router.go(0)
     }
   }
-};
+}
 </script>
 
 <style scoped lang="scss">
