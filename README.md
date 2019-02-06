@@ -49,7 +49,7 @@
 
 [项目演示 - v1](https://chemical-dict.herokuapp.com)
 
-[采坑记录 - v1](https://github.com/shzym86/chemical-dict/blob/master/README.md)
+[采坑记录 - v1](https://github.com/shzym86/chemical-dict/blob/master/Problems.md)
 
 
 ### 1. 技术栈
