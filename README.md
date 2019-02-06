@@ -1,13 +1,56 @@
-## 化学专业术语在线词典
+# 化学专业术语在线词典 v2
+
+本项目于2019年2月更新了2.0升级版：[项目演示 - v2](https://chemical-dict-2.herokuapp.com)
+
+> 2.0 版本正处于继续优化阶段，暂不开源。本仓库的代码仍然为 1.0 版本。
+
+2.0 版本在原有基础上新增了更多功能：
+
+- 用户注册登录
+- 本地收藏生词本
+- 在线贡献新词
+- GitHub第三方登录
+
+同时实践了更多更丰富的 **前端** 和 **Node.js** 相关的技术栈，包括：
+
+- vue-cli 3 最新脚手架重构项目、目录结构优化设计、深入ES6模块化
+- vue-router 实现 SPA 路由跳转、导航守卫保护认证路由
+- vuex 存储用户认证信息
+- vue-meta 为 SPA 页面定制不同的 title
+- axios 实现前后端数据交互、拦截响应数据、统一处理异常
+- Koa 2 作为后端服务器，提供后端接口
+- Bootstrap 4 全新布局重构项目，灵活使用 Utilities
+- Material Design Icons 字体图标的使用
+- Lodash 各种常见工具函数的使用
+- Element-UI 提供常用的 Vue UI组件（如表单验证）、按需引入节省流量
+- MongoDB 数据库存储
+- mongoose 操作数据库，实现增删改查
+- 搜索引擎的原理与实现（数据查询、数据防抓取、正则表达式）
+- SSR 首页预渲染
+- 响应式设计，完美兼容移动端体验
+- Localforage 增强版的浏览器本地缓存
+- JWT 用户认证机制，保护认证的后端接口
+- OAuth 2.0 第三方社交登录 - 对接 GitHub 登录
+- 腾讯防水墙
+- 一键社交分享功能
+- mlab 部署本地 MongoDB 数据库
+- Heroku 部署项目
+
+
+
+# 化学专业术语在线词典 v1
 
 > 项目背景：近日完成了一项有关“学术在线词典”类的产品原型设计，之后对搜索引擎的实现原理产生了兴趣，尽管在公司仅作为产品设计，不参与后期项目开发，但是我还是不想半途而废，于是就选取了一部分与化学有关的专业术语数据，花了几天时间开发了一款简单的在线词典。
 
-### Vue 2.x + Koa2 实现简单搜索引擎
+## Vue 2.x + Koa2 实现简单搜索引擎
 
-[项目演示](https://chemical-dict.herokuapp.com)
+这是一个前后端完全分离的项目，实现了一个简单的搜索引擎的功能，主要学习了如何从后台按需查询数据，并经过处理后展示给前端页面，也学习了如何来写简单的API供前端调用。
 
 
-> 这是一个前后端完全分离的项目，实现了一个简单的搜索引擎的功能，主要学习了如何从后台按需查询数据，并经过处理后展示给前端页面，也学习了如何来写简单的API供前端调用。
+[项目演示 - v1](https://chemical-dict.herokuapp.com)
+
+[采坑记录 - v1](https://github.com/shzym86/chemical-dict/blob/master/README.md)
+
 
 ### 1. 技术栈
 
@@ -79,3 +122,4 @@
 Search | 按关键词搜索页 | /api/list | getByKeywords(keywords, curPage, lang)
 Category | 学科分类索引页 | /api/fetchIndex | getAllCategories()
 CategorySearch | 按学科类别搜索页 | /api/list2 | getByCategory(subject, curPage)
+
